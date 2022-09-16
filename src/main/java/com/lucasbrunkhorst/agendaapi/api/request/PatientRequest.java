@@ -12,8 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PatientRequest {
 
-    private Long id;
-
     private String name;
 
     private String lastName;

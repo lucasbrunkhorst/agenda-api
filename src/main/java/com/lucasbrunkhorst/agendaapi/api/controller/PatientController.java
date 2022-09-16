@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class PatientController {
     private final PatientMapper patientMapper;
 
     @PostMapping
-    public ResponseEntity<PatientResponse> create(@RequestBody PatientRequest request) {
+    public ResponseEntity<PatientResponse> create(@Valid @RequestBody PatientRequest request) {
         Patient patient = patientMapper.toPatient(request);
         Patient savePatient = service.save(patient);
         PatientResponse patientResponse = patientMapper.toPatienceResponse(savePatient);
@@ -51,16 +52,16 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponse> update(@RequestBody PatientRequest request) {
+    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @Valid @RequestBody PatientRequest request) {
         Patient patient = patientMapper.toPatient(request);
-        Patient savePatient = service.save(patient);
+        Patient savePatient = service.update(id, patient);
         PatientResponse patientResponse = patientMapper.toPatienceResponse(savePatient);
 
         return ResponseEntity.status(HttpStatus.OK).body(patientResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

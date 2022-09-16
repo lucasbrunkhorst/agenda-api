@@ -4,7 +4,6 @@ package com.lucasbrunkhorst.agendaapi.service;
 import com.lucasbrunkhorst.agendaapi.domain.entities.Patient;
 import com.lucasbrunkhorst.agendaapi.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import java.util.Optional;
 public class PatientService {
 
     private final PatientRepository repository;
-    private final ModelMapper modelMapper;
 
     public Patient save(Patient patient) {
         boolean existCpf = false;
@@ -38,6 +36,17 @@ public class PatientService {
 
     public List<Patient> list() {
         return repository.findAll();
+    }
+
+    public Patient update(Long id, Patient patient) {
+        Optional<Patient> optPatient = this.read(id);
+
+        if(optPatient.isEmpty()) {
+            throw new NoResultException(" Patient not found ! ");
+        }
+        patient.setId(id);
+
+        return save(patient);
     }
 
     public Optional<Patient> read(Long id) {
