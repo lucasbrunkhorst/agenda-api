@@ -12,10 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class ScheduleServiceTest {
@@ -86,19 +85,5 @@ class ScheduleServiceTest {
         Assertions.assertThat(noResultException.getMessage()).isEqualTo(" Patient ID not found !");
     }
 
-    @Test
-    @DisplayName("Must find all scheduling ")
-    void mustFindAllScheduling() {
-
-        LocalDateTime now = LocalDateTime.now();
-        Schedule schedule = new Schedule();
-        schedule.setDescription("New scheduling ");
-        schedule.setDateCreation(now);
-        service.listAllSchedule();
-
-        Mockito.when(service.listAllSchedule()).thenReturn(List.of(schedule));
-
-        Assertions.assertThat(service.listAllSchedule()).hasSize(1);
-    }
 
 }
