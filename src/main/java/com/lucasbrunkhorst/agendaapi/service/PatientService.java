@@ -2,12 +2,12 @@ package com.lucasbrunkhorst.agendaapi.service;
 
 
 import com.lucasbrunkhorst.agendaapi.domain.entities.Patient;
+import com.lucasbrunkhorst.agendaapi.exception.BusinessException;
 import com.lucasbrunkhorst.agendaapi.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ public class PatientService {
             }
         }
         if (existCpf) {
-            throw new NoResultException(" Cpf already exists! ");
+            throw new BusinessException("Cpf already exists!");
         }
         return repository.save(patient);
 
@@ -42,7 +42,7 @@ public class PatientService {
         Optional<Patient> optPatient = this.read(id);
 
         if(optPatient.isEmpty()) {
-            throw new NoResultException(" Patient not found ! ");
+            throw new BusinessException("Patient not found!");
         }
         patient.setId(id);
 
